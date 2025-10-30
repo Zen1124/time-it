@@ -13,3 +13,36 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Employees {
+  id                    Int           @id @default(autoincrement())
+  first_name            String
+  last_name             String
+  facility              Facilities    @relation(fields: [facility_id], references: [id])
+  facility_id           Int 
+  position              String        
+  manager               Managers      @relation(fields: [manager_id], references: [id]) 
+  manager_id
+  timesheets            Timesheets[]
+  created_at            DateTime      @default(now())
+}
+
+model Managers {
+  id                    Int           @id @default(autoincrement())
+  first_name            String
+  last_name             String
+  facility              Facilities    @relation(fields: [facility_id], references: [id])
+  facility_id           Int   
+  position              String
+  email                 String        @unique
+  created_at            DateTime      @default(now())
+
+}
+
+model Timesheets {
+  id                    Int           @id @default(autoincrement())
+  start_date            DateTime      @default(now())
+  end_date              DateTime
+  created_at            DateTime      @default(now())
+
+}
